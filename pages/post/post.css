@@ -1,0 +1,125 @@
+/* =============================================================================
+ * post.css —— 只给文章页用：文章头 / 提示条 / 上下篇 / 加密框
+ * 正文（.prose）和代码块的排版已经挪到公共的 css/style.css 里，
+ * 因为主页（README）/ 好友 / 关于也都要渲染 md。
+ * 外观沿用原来的 article.css，一字未改配色。
+ * ========================================================================== */
+
+.article-head { margin-bottom: 24px; }
+.article-title { font-size: var(--fs-2xl); font-weight: 680; letter-spacing: -.02em; line-height: 1.3; margin-bottom: 12px; }
+.article-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; color: var(--text-3); font-size: var(--fs-xs); }
+.article-meta .m { display: inline-flex; align-items: center; gap: 5px; }
+.article-meta .m .icon { width: 14px; height: 14px; }
+.article-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+
+/* ------------------------------- 提示条 --------------------------------- */
+/* 提示条要跟页面底色拉开，并按类型染主题色（不然跟表格一样“看不出是个提示”） */
+.notice {
+  display: flex;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  margin: 22px 0;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+.notice .icon { width: 18px; height: 18px; flex: none; margin-top: 2px; color: var(--text-3); }
+.notice-title { font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.notice-text { line-height: 1.65; word-break: break-word; }
+.notice.is-info, .notice.is-tip { background: var(--brand-1); border-color: var(--brand-3); }
+.notice.is-info .icon, .notice.is-tip .icon { color: var(--brand-4); }
+.notice.is-warn { background: var(--warn-bg); border-color: var(--warn-border); }
+.notice.is-warn .icon, .notice.is-warn .notice-title { color: var(--warn); }
+
+/* ------------------------------- 上下篇 --------------------------------- */
+.prev-next { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 36px; }
+.pn-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  min-height: 74px;
+  transition: border-color var(--t) var(--ease), transform var(--t) var(--ease), background var(--t) var(--ease);
+}
+.pn-card:hover { border-color: var(--brand-3); background: var(--brand-1); transform: translateY(-1px); }
+.pn-card.is-next { text-align: right; align-items: flex-end; }
+.pn-card.is-empty { opacity: .45; pointer-events: none; }
+.pn-label { display: inline-flex; align-items: center; gap: 5px; font-size: var(--fs-xs); color: var(--text-3); }
+.pn-label .icon { width: 13px; height: 13px; }
+.pn-title {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* ------------------------------ 加密文章 ------------------------------- */
+.lock-box {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(340px, calc(100vw - 40px));
+  height: max-content;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 28px 22px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow-2);
+  text-align: center;
+}
+.lock-box > .icon { width: 24px; height: 24px; color: var(--brand-4); }
+.lock-title { font-size: var(--fs-md); font-weight: 620; }
+.lock-hint { font-size: var(--fs-xs); color: var(--text-3); }
+.lock-form { display: flex; gap: 8px; width: 100%; }
+/* 密码框：底和边都用主题色，聚焦只是加深一档 ——
+   不然一亮一暗（surface-2 ↔ surface）看着就是“闪一下主题色、然后变白” */
+.lock-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 34px;
+  padding: 0 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--brand-3);
+  background: var(--brand-1);
+  color: var(--text);
+}
+.lock-input::placeholder { color: var(--text-3); }
+.lock-input:focus { background: var(--brand-2); border-color: var(--brand-4); box-shadow: 0 0 0 3px var(--brand-1); }
+/* 浏览器自动填充会硬塞一个白/黄底，这里用内阴影盖掉，保持主题色 */
+.lock-input:-webkit-autofill,
+.lock-input:-webkit-autofill:hover,
+.lock-input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--text);
+  caret-color: var(--text);
+  box-shadow: 0 0 0 40px var(--brand-1) inset;
+}
+.lock-btn {
+  flex: none;
+  height: 34px;
+  padding: 0 16px;
+  border-radius: var(--radius-pill);
+  background: var(--brand-4);
+  color: var(--brand-ink);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+.lock-btn[disabled] { opacity: .5; cursor: default; }
+.lock-error { min-height: 16px; font-size: var(--fs-xs); color: var(--danger); }
+
+@media (max-width: 900px) {
+  .prev-next { grid-template-columns: 1fr; }
+  .pn-card.is-next { text-align: left; align-items: flex-start; }
+  .article-title { font-size: var(--fs-xl); }
+}
